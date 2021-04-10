@@ -7,15 +7,14 @@ import 'package:flutter/material.dart';
 /// When a waffle is long tapped, it switches into flavor editing mode.
 /// Flavor is a local marker to make complex filtering easier.
 ///
-///
-///
 /// You can attach both [onTap] and [onLongPress] to the waffle.
 class Waffle extends StatelessWidget {
   /// Widget to display at the top most of the [Waffle].
   /// Usually a row of flavors
   final Widget? header;
 
-  /// Columns of the Waffle, usually uses [WaffleTopping]
+  /// Columns of the Waffle, usually uses [WaffleTopping].
+  /// Will be placed as a row children.
   final List<Widget> columns;
 
   /// Widget to display at the bottom-most of the [Waffle]
@@ -64,7 +63,7 @@ class Waffle extends StatelessWidget {
   }
 }
 
-/// Topping is a column in the waffle. It got width to make it resizeable.
+/// Topping is the preferred widget for [Waffle] columns
 class WaffleTopping extends StatelessWidget {
   /// Width of the topping. Will have unbounded width if null
   final double? width;
