@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cafe/flutter_cafe.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+class FakeContext extends Fake implements BuildContext {}
+
 void main() {
   group('Waffle', () {
     final List<Widget> columnFixtures = [
@@ -197,5 +199,22 @@ void main() {
         );
       },
     );
+
+    group('WaffleTopping.asTitleAndColumnOfIconAndCaptions', () {
+      test(
+        "should throw AssertionError when icons and contentTexts "
+        "doesn't have identical length",
+        () async {
+          await expectLater(
+            () => WaffleTopping.asTitleAndColumnOfIconAndCaptions(
+                context: FakeContext(),
+                titleText: 'abc',
+                icons: [Icon(Icons.person)],
+                contentTexts: []),
+            throwsA(isA<AssertionError>()),
+          );
+        },
+      );
+    });
   });
 }

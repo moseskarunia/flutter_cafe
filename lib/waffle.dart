@@ -106,4 +106,29 @@ class WaffleTopping extends StatelessWidget {
       child: main,
     );
   }
+
+  factory WaffleTopping.asTitleAndColumnOfIconAndCaptions({
+    required BuildContext context,
+    required String titleText,
+    required List<Widget> icons,
+    required List<String> contentTexts,
+  }) {
+    if (icons.length != contentTexts.length) {
+      throw AssertionError(
+          'icons and contentTexts should have identical length');
+    }
+
+    throw UnimplementedError();
+
+    // Widget title = Text(
+    //   titleText,
+    //   style: Theme.of(context).textTheme.bodyText2,
+    // );
+
+    // Widget content = Column(
+    //   children: List<int>.generate(icons.length, (i) => i)
+    //       .map((i) => Row(children: [icons[i], Text(contentTexts[i])]))
+    //       .toList(),
+    // );
+  }
 }
