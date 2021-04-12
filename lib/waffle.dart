@@ -95,7 +95,12 @@ class WaffleTopping extends StatelessWidget {
       children.add(content!);
     }
 
-    Widget main = children.length > 1 ? Column(children: children) : title;
+    Widget main = children.length > 1
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
+          )
+        : title;
 
     if (width == null && padding == null && margin == null) return main;
 
@@ -107,28 +112,65 @@ class WaffleTopping extends StatelessWidget {
     );
   }
 
+  /// A waffle topping with title and icons and content texts.
+  /// Each [contentTexts] will be styled with caption, wrapped with Expanded,
+  /// and spaced 16 wide with the icon.
+  ///
+  /// * [titleText] - Will be styled with bodyText2
+  /// * [icons] will be paired with [contentText] based on their index. Both must
+  /// have identical length, otherwise will throw an AssertionError.
   factory WaffleTopping.asTitleAndColumnOfIconAndCaptions({
     required BuildContext context,
     required String titleText,
     required List<Widget> icons,
     required List<String> contentTexts,
+    Key? key,
+    EdgeInsetsGeometry? margin,
+    EdgeInsetsGeometry? padding,
+    double? width,
   }) {
     if (icons.length != contentTexts.length) {
       throw AssertionError(
           'icons and contentTexts should have identical length');
     }
 
-    throw UnimplementedError();
+    Widget title = Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Text(
+        titleText,
+        style: Theme.of(context).textTheme.bodyText2,
+      ),
+    );
 
-    // Widget title = Text(
-    //   titleText,
-    //   style: Theme.of(context).textTheme.bodyText2,
-    // );
+    Widget content = Column(
+      children: List<int>.generate(icons.length, (i) => i)
+          .map(
+            (i) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                children: [
+                  icons[i],
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Text(
+                      contentTexts[i],
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+          .toList(),
+    );
 
-    // Widget content = Column(
-    //   children: List<int>.generate(icons.length, (i) => i)
-    //       .map((i) => Row(children: [icons[i], Text(contentTexts[i])]))
-    //       .toList(),
-    // );
+    return WaffleTopping(
+      key: key,
+      title: title,
+      content: content,
+      margin: margin,
+      padding: padding,
+      width: width,
+    );
   }
 }

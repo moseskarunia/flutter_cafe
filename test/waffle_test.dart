@@ -131,18 +131,23 @@ void main() {
     });
     testWidgets('should contain title and content', (tester) async {
       await tester.pumpWidget(MaterialApp(
-        home: Scaffold(body: WaffleTopping(title: Text('Topping caption'))),
+        home: Scaffold(
+          body: WaffleTopping(
+            title: Text('Topping title'),
+            content: Text('Topping content'),
+          ),
+        ),
       ));
 
-      expect(find.text('Topping caption'), findsOneWidget);
+      expect(find.text('Topping title'), findsOneWidget);
+      expect(find.text('Topping content'), findsOneWidget);
+
       expect(
-        find.byType(Container),
-        findsNothing,
-        reason: 'because width is null',
-      );
-      expect(
-        find.byType(Column),
-        findsNothing,
+        find.byWidgetPredicate(
+          (w) =>
+              w is Column && w.crossAxisAlignment == CrossAxisAlignment.start,
+        ),
+        findsOneWidget,
         reason: 'because only caption is provided',
       );
     });
@@ -161,11 +166,6 @@ void main() {
               (w) => w is Container && w.constraints!.maxWidth == 200),
           findsOneWidget,
           reason: 'because width is provided',
-        );
-        expect(
-          find.byType(Column),
-          findsNothing,
-          reason: 'because only title is provided',
         );
       },
     );
@@ -192,11 +192,6 @@ void main() {
           findsOneWidget,
           reason: 'even if width not provied, either padding or margin is',
         );
-        expect(
-          find.byType(Column),
-          findsNothing,
-          reason: 'because only title is provided',
-        );
       },
     );
 
@@ -212,6 +207,168 @@ void main() {
                 icons: [Icon(Icons.person)],
                 contentTexts: []),
             throwsA(isA<AssertionError>()),
+          );
+        },
+      );
+
+      testWidgets(
+        'should create WaffleTopping with title text John Doe, '
+        'and 2 content rows: Icons.email - johndoe@test.com & '
+        'Icons.home - Sesame Street 123 & Icons.cake - 1st Jan 21',
+        (tester) async {
+          await tester.pumpWidget(MaterialApp(
+            home: Scaffold(
+              body: Builder(builder: (context) {
+                return WaffleTopping.asTitleAndColumnOfIconAndCaptions(
+                  context: context,
+                  titleText: 'John Doe',
+                  icons: [
+                    Icon(Icons.email),
+                    Icon(Icons.home),
+                    Icon(Icons.cake),
+                  ],
+                  contentTexts: [
+                    'johndoe@test.com',
+                    'Sesame Street 123',
+                    '1st Jan 21',
+                  ],
+                );
+              }),
+            ),
+          ));
+          expect(
+            find.byWidgetPredicate(
+              (w) =>
+                  w is Padding &&
+                  w.child is Text &&
+                  (w.child as Text).data == 'John Doe' &&
+                  w.padding == const EdgeInsets.only(bottom: 8),
+            ),
+            findsOneWidget,
+            reason: 'Title is John Doe and has bottom padding 8',
+          );
+          expect(
+            find.byWidgetPredicate(
+              (w) =>
+                  w is Text &&
+                  w.data == 'John Doe' &&
+                  w.style!.fontSize == 14 &&
+                  w.style!.fontWeight == FontWeight.w400,
+            ),
+            findsOneWidget,
+            reason: 'Title styled with bodyText2',
+          );
+
+          expect(
+            find.byWidgetPredicate(
+              (w) => w is Column && w.children.length == 3,
+            ),
+            findsOneWidget,
+            reason: 'A column containing 3 children',
+          );
+
+          expect(
+            find.byWidgetPredicate(
+              (w) =>
+                  w is Row &&
+                  w.children.isNotEmpty &&
+                  w.children[0] is Icon &&
+                  (w.children[0] as Icon).icon == Icons.email &&
+                  w.children[1] is SizedBox &&
+                  (w.children[1] as SizedBox).width == 16 &&
+                  w.children[2] is Expanded &&
+                  ((w.children[2] as Expanded).child as Text).data ==
+                      'johndoe@test.com' &&
+                  ((w.children[2] as Expanded).child as Text).style!.fontSize ==
+                      12 &&
+                  ((w.children[2] as Expanded).child as Text)
+                          .style!
+                          .fontWeight ==
+                      FontWeight.w400,
+            ),
+            findsOneWidget,
+            reason: 'A row containing Icons.email & 16-width sized box & '
+                'caption-styled text',
+          );
+
+          expect(
+            find.byWidgetPredicate(
+              (w) =>
+                  w is Row &&
+                  w.children.isNotEmpty &&
+                  w.children[0] is Icon &&
+                  (w.children[0] as Icon).icon == Icons.home &&
+                  w.children[1] is SizedBox &&
+                  (w.children[1] as SizedBox).width == 16 &&
+                  w.children[2] is Expanded &&
+                  ((w.children[2] as Expanded).child as Text).data ==
+                      'Sesame Street 123' &&
+                  ((w.children[2] as Expanded).child as Text).style!.fontSize ==
+                      12 &&
+                  ((w.children[2] as Expanded).child as Text)
+                          .style!
+                          .fontWeight ==
+                      FontWeight.w400,
+            ),
+            findsOneWidget,
+            reason: 'A row containing Icons.home & 16-width sized box & '
+                'caption-styled text',
+          );
+
+          expect(
+            find.byWidgetPredicate(
+              (w) =>
+                  w is Row &&
+                  w.children.isNotEmpty &&
+                  w.children[0] is Icon &&
+                  (w.children[0] as Icon).icon == Icons.cake &&
+                  w.children[1] is SizedBox &&
+                  (w.children[1] as SizedBox).width == 16 &&
+                  w.children[2] is Expanded &&
+                  ((w.children[2] as Expanded).child as Text).data ==
+                      '1st Jan 21' &&
+                  ((w.children[2] as Expanded).child as Text).style!.fontSize ==
+                      12 &&
+                  ((w.children[2] as Expanded).child as Text)
+                          .style!
+                          .fontWeight ==
+                      FontWeight.w400,
+            ),
+            findsOneWidget,
+            reason: 'A row containing Icons.cake & 16-width sized box & '
+                'caption-styled text',
+          );
+        },
+      );
+
+      testWidgets(
+        'should find margin, padding and width',
+        (tester) async {
+          await tester.pumpWidget(MaterialApp(
+            home: Scaffold(
+              body: Builder(builder: (context) {
+                return WaffleTopping.asTitleAndColumnOfIconAndCaptions(
+                  context: context,
+                  titleText: 'John Doe',
+                  icons: [Icon(Icons.email)],
+                  contentTexts: ['johndoe@test.com'],
+                  margin: const EdgeInsets.all(17),
+                  padding: const EdgeInsets.all(19),
+                  width: 102,
+                );
+              }),
+            ),
+          ));
+
+          await tester.pumpAndSettle();
+
+          expect(
+            find.byWidgetPredicate((w) =>
+                w is Container &&
+                w.constraints!.maxWidth == 102 &&
+                w.margin == const EdgeInsets.all(17) &&
+                w.padding == const EdgeInsets.all(19)),
+            findsOneWidget,
           );
         },
       );
