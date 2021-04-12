@@ -110,7 +110,24 @@ void main() {
   });
 
   group('WaffleTopping', () {
-    testWidgets('should contain caption', (tester) async {
+    testWidgets('should contain title', (tester) async {
+      await tester.pumpWidget(MaterialApp(
+        home: Scaffold(body: WaffleTopping(title: Text('Topping title'))),
+      ));
+
+      expect(find.text('Topping title'), findsOneWidget);
+      expect(
+        find.byType(Container),
+        findsNothing,
+        reason: 'because width is null',
+      );
+      expect(
+        find.byType(Column),
+        findsNothing,
+        reason: 'because only title is provided',
+      );
+    });
+    testWidgets('should contain title and content', (tester) async {
       await tester.pumpWidget(MaterialApp(
         home: Scaffold(body: WaffleTopping(title: Text('Topping caption'))),
       ));
@@ -132,24 +149,51 @@ void main() {
       (tester) async {
         await tester.pumpWidget(MaterialApp(
           home: Scaffold(
-            body: WaffleTopping(
-              title: Text('Topping caption'),
-              width: 200,
-            ),
+            body: WaffleTopping(title: Text('Topping title'), width: 200),
           ),
         ));
 
-        expect(find.text('Topping caption'), findsOneWidget);
+        expect(find.text('Topping title'), findsOneWidget);
         expect(
           find.byWidgetPredicate(
               (w) => w is Container && w.constraints!.maxWidth == 200),
           findsOneWidget,
-          reason: 'because width is null',
+          reason: 'because width is provided',
         );
         expect(
           find.byType(Column),
           findsNothing,
-          reason: 'because only caption is provided',
+          reason: 'because only title is provided',
+        );
+      },
+    );
+
+    testWidgets(
+      'should be wrapped with container if margin or padding is provided',
+      (tester) async {
+        await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+            body: WaffleTopping(
+              title: Text('Topping title'),
+              margin: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(16),
+            ),
+          ),
+        ));
+
+        expect(find.text('Topping title'), findsOneWidget);
+        expect(
+          find.byWidgetPredicate((w) =>
+              w is Container &&
+              w.padding == const EdgeInsets.all(16) &&
+              w.margin == const EdgeInsets.all(8)),
+          findsOneWidget,
+          reason: 'even if width not provied, either padding or margin is',
+        );
+        expect(
+          find.byType(Column),
+          findsNothing,
+          reason: 'because only title is provided',
         );
       },
     );

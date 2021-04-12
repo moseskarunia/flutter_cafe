@@ -76,11 +76,15 @@ class WaffleTopping extends StatelessWidget {
   /// text size than [title]. (e.g. caption / overline)
   final Widget? content;
 
+  final EdgeInsetsGeometry? margin, padding;
+
   const WaffleTopping({
     required this.title,
     Key? key,
     this.width,
     this.content,
+    this.margin,
+    this.padding,
   }) : super(key: key);
 
   @override
@@ -93,8 +97,13 @@ class WaffleTopping extends StatelessWidget {
 
     Widget main = children.length > 1 ? Column(children: children) : title;
 
-    if (width == null) return main;
+    if (width == null && padding == null && margin == null) return main;
 
-    return Container(width: width, child: main);
+    return Container(
+      margin: margin,
+      padding: padding,
+      width: width,
+      child: main,
+    );
   }
 }
