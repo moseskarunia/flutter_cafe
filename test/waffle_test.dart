@@ -108,4 +108,50 @@ void main() {
       );
     });
   });
+
+  group('WaffleTopping', () {
+    testWidgets('should contain caption', (tester) async {
+      await tester.pumpWidget(MaterialApp(
+        home: Scaffold(body: WaffleTopping(title: Text('Topping caption'))),
+      ));
+
+      expect(find.text('Topping caption'), findsOneWidget);
+      expect(
+        find.byType(Container),
+        findsNothing,
+        reason: 'because width is null',
+      );
+      expect(
+        find.byType(Column),
+        findsNothing,
+        reason: 'because only caption is provided',
+      );
+    });
+    testWidgets(
+      'should be wrapped with container if width is provided',
+      (tester) async {
+        await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+            body: WaffleTopping(
+              title: Text('Topping caption'),
+              width: 200,
+            ),
+          ),
+        ));
+
+        expect(find.text('Topping caption'), findsOneWidget);
+        expect(
+          find.byWidgetPredicate(
+              (w) => w is Container && w.constraints!.maxWidth == 200),
+          findsOneWidget,
+          reason: 'because width is null',
+        );
+        expect(
+          find.byType(Column),
+          findsNothing,
+          reason: 'because only caption is provided',
+        );
+      },
+    );
+  });
 }

@@ -69,15 +69,15 @@ class WaffleTopping extends StatelessWidget {
   final double? width;
 
   /// The main information of the column. Usually a bodyText2 styled text.
-  final Widget caption;
+  final Widget title;
 
   /// The supporting informations of the column. Usually a column.
   /// If using text as one of column children, it's recommended to have smaller
-  /// text size than [caption]. (e.g. caption / overline)
+  /// text size than [title]. (e.g. caption / overline)
   final Widget? content;
 
   const WaffleTopping({
-    required this.caption,
+    required this.title,
     Key? key,
     this.width,
     this.content,
@@ -85,13 +85,13 @@ class WaffleTopping extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = [caption];
+    List<Widget> children = [title];
 
     if (content != null) {
       children.add(content!);
     }
 
-    Widget main = Column(children: children);
+    Widget main = children.length > 1 ? Column(children: children) : title;
 
     if (width == null) return main;
 
