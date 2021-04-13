@@ -374,4 +374,107 @@ void main() {
       );
     });
   });
+
+  group('WaffleFlavorRow', () {
+    testWidgets(
+      'should display 3 color pills with border radius and 16 spacing',
+      (tester) async {
+        await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+            body: WaffleFlavorRow(
+              color: [Colors.black, Colors.black, Colors.black],
+              spacingBetweenColors: 8,
+            ),
+          ),
+        ));
+
+        expect(
+          find.byWidgetPredicate(
+            (w) =>
+                w is Container &&
+                w.decoration is BoxDecoration &&
+                (w.decoration as BoxDecoration).color == Colors.black &&
+                (w.decoration as BoxDecoration).borderRadius ==
+                    BorderRadius.circular(4) &&
+                w.constraints!.maxWidth == 32 &&
+                w.constraints!.maxHeight == 8,
+          ),
+          findsNWidgets(3),
+        );
+
+        expect(
+          find.byWidgetPredicate((w) => w is SizedBox && w.width == 8),
+          findsNWidgets(2),
+        );
+
+        expect(
+          find.byWidgetPredicate(
+              (w) => w is Wrap && w.direction == Axis.horizontal),
+          findsOneWidget,
+        );
+
+        expect(
+          find.byWidgetPredicate((w) => w is Container && w.child is Wrap),
+          findsNothing,
+          reason:
+              'No outer container because neither margin nor padding provided',
+        );
+      },
+    );
+
+    testWidgets(
+      'should display 3 color pills with border radius and 16 spacing and have '
+      'wrapped with container with margin and padding',
+      (tester) async {
+        await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+            body: WaffleFlavorRow(
+              color: [Colors.black, Colors.black, Colors.black],
+              spacingBetweenColors: 8,
+              margin: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(8),
+            ),
+          ),
+        ));
+
+        expect(
+          find.byWidgetPredicate(
+            (w) =>
+                w is Container &&
+                w.decoration is BoxDecoration &&
+                (w.decoration as BoxDecoration).color == Colors.black &&
+                (w.decoration as BoxDecoration).borderRadius ==
+                    BorderRadius.circular(4) &&
+                w.constraints!.maxWidth == 32 &&
+                w.constraints!.maxHeight == 8,
+          ),
+          findsNWidgets(3),
+        );
+
+        expect(
+          find.byWidgetPredicate((w) => w is SizedBox && w.width == 8),
+          findsNWidgets(2),
+        );
+
+        expect(
+          find.byWidgetPredicate(
+              (w) => w is Wrap && w.direction == Axis.horizontal),
+          findsOneWidget,
+        );
+
+        expect(
+          find.byWidgetPredicate(
+            (w) =>
+                w is Container &&
+                w.child is Wrap &&
+                w.padding == const EdgeInsets.all(8) &&
+                w.margin == const EdgeInsets.all(16),
+          ),
+          findsOneWidget,
+          reason:
+              'No outer container because neither margin nor padding provided',
+        );
+      },
+    );
+  });
 }

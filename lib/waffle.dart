@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 /// Card widget to be display a complex row of a table.
@@ -60,6 +62,53 @@ class Waffle extends StatelessWidget {
       onLongPress: onLongPress != null ? () => onLongPress!(context) : null,
       child: card,
     );
+  }
+}
+
+/// List of color usually displayed at [header] of [Waffle].
+class WaffleFlavorRow extends StatelessWidget {
+  final List<Color> color;
+
+  /// padding and margin of the outer container.
+  final EdgeInsetsGeometry? padding, margin;
+
+  /// Spacing between 2 colors. By default 16.
+  final double spacingBetweenColors;
+
+  const WaffleFlavorRow({
+    Key? key,
+    required this.color,
+    this.padding,
+    this.margin,
+    this.spacingBetweenColors = 16,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final lengthWithSeparator = max(0, color.length * 2 - 1);
+
+    final child = Wrap(
+      direction: Axis.horizontal,
+      children: List<int>.generate(lengthWithSeparator, (i) => i).map((i) {
+        if (i.isOdd) {
+          return SizedBox(width: spacingBetweenColors);
+        }
+
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            color: color[i ~/ 2],
+          ),
+          width: 32,
+          height: 8,
+        );
+      }).toList(),
+    );
+
+    if (padding == null && margin == null) {
+      return child;
+    }
+    return Container(padding: padding, margin: margin, child: child);
   }
 }
 
