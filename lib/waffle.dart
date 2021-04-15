@@ -41,7 +41,10 @@ class Waffle extends StatelessWidget {
       children.add(header!);
     }
 
-    children.add(Row(children: columns));
+    children.add(Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: columns,
+    ));
 
     if (footer != null) {
       children.add(footer!);
@@ -49,7 +52,7 @@ class Waffle extends StatelessWidget {
 
     Widget card = Card(
       child: children.length == 1
-          ? Row(children: columns)
+          ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: columns)
           : Column(children: children),
     );
 

@@ -53,6 +53,8 @@ void main() {
             (w) =>
                 w is Card &&
                 w.child is Row &&
+                (w.child as Row).crossAxisAlignment ==
+                    CrossAxisAlignment.start &&
                 (w.child as Row).children.whereType<SizedBox>().length == 4,
           ),
           findsOneWidget,
