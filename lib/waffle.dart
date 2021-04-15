@@ -200,6 +200,7 @@ class WaffleTopping extends StatelessWidget {
             (i) => Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   icons[i],
                   SizedBox(width: 16),

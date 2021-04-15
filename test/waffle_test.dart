@@ -273,6 +273,7 @@ void main() {
             find.byWidgetPredicate(
               (w) =>
                   w is Row &&
+                  w.crossAxisAlignment == CrossAxisAlignment.start &&
                   w.children.isNotEmpty &&
                   w.children[0] is Icon &&
                   (w.children[0] as Icon).icon == Icons.email &&
@@ -297,6 +298,7 @@ void main() {
             find.byWidgetPredicate(
               (w) =>
                   w is Row &&
+                  w.crossAxisAlignment == CrossAxisAlignment.start &&
                   w.children.isNotEmpty &&
                   w.children[0] is Icon &&
                   (w.children[0] as Icon).icon == Icons.home &&
@@ -321,6 +323,7 @@ void main() {
             find.byWidgetPredicate(
               (w) =>
                   w is Row &&
+                  w.crossAxisAlignment == CrossAxisAlignment.start &&
                   w.children.isNotEmpty &&
                   w.children[0] is Icon &&
                   (w.children[0] as Icon).icon == Icons.cake &&
