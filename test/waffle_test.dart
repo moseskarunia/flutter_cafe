@@ -30,7 +30,7 @@ void main() {
       expect(
         find.byWidgetPredicate(
           (w) =>
-              w is Card &&
+              w is Container &&
               w.child is Column &&
               (w.child as Column).children.length == 3,
         ),
@@ -40,10 +40,11 @@ void main() {
     }
 
     testWidgets(
-      'should display only columns, inside a row, and inside a card',
+      'should display only columns, inside a row, and inside a card with '
+      'fixed width',
       (tester) async {
         await tester.pumpWidget(MaterialApp(
-          home: Scaffold(body: Waffle(columns: columnFixtures)),
+          home: Scaffold(body: Waffle(columns: columnFixtures, width: 500)),
         ));
 
         await _testColumns();
@@ -52,6 +53,19 @@ void main() {
           find.byWidgetPredicate(
             (w) =>
                 w is Card &&
+                w.child is Container &&
+                (w.child as Container).constraints!.minWidth == 500 &&
+                ((w.child as Container).decoration as BoxDecoration).border ==
+                    Border.all(color: Colors.transparent),
+          ),
+          findsOneWidget,
+          reason: 'Card child is a container with transparent border since '
+              '!isSelected',
+        );
+        expect(
+          find.byWidgetPredicate(
+            (w) =>
+                w is Container &&
                 w.child is Row &&
                 (w.child as Row).crossAxisAlignment ==
                     CrossAxisAlignment.start &&
@@ -59,10 +73,36 @@ void main() {
           ),
           findsOneWidget,
           reason: 'Since no other vertical child, '
-              'column row is the direct child of Card',
+              'column row is the direct child of Container',
         );
 
         expect(find.byType(InkWell), findsNothing);
+      },
+    );
+
+    testWidgets(
+      'should display with accent-colored border if isSelected',
+      (tester) async {
+        await tester.pumpWidget(MaterialApp(
+          theme: ThemeData(accentColor: Colors.orange),
+          home: Scaffold(
+            body: Waffle(columns: columnFixtures, width: 500, isSelected: true),
+          ),
+        ));
+
+        expect(
+          find.byWidgetPredicate(
+            (w) =>
+                w is Card &&
+                w.child is Container &&
+                (w.child as Container).constraints!.minWidth == 500 &&
+                ((w.child as Container).decoration as BoxDecoration).border ==
+                    Border.all(color: Colors.orange),
+          ),
+          findsOneWidget,
+          reason: 'Card child is a container with transparent border since '
+              '!isSelected',
+        );
       },
     );
 
