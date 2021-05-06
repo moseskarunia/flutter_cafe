@@ -1,3 +1,7 @@
+## [0.0.2-dev.3] - 6 May 21
+- Update: Added `cornerRadius` to Waffle.
+- Breaking: `Waffle` no longer wrapped by `Card`.
+
 ## [0.0.2-dev.2] - 6 May 21
 - Update: Added `width` and `isSelected` to Waffle
 

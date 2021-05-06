@@ -31,10 +31,14 @@ class Waffle extends StatelessWidget {
   /// theme's accent color.
   final bool isSelected;
 
+  /// Default value 0
+  final double cornerRadius;
+
   const Waffle({
     Key? key,
     required this.columns,
     this.isSelected = false,
+    this.cornerRadius = 4,
     this.width,
     this.footer,
     this.header,
@@ -59,30 +63,28 @@ class Waffle extends StatelessWidget {
       children.add(footer!);
     }
 
-    Widget card = Card(
-      child: Container(
-        width: width,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color:
-                isSelected ? Theme.of(context).accentColor : Colors.transparent,
-          ),
+    Widget child = Container(
+      width: width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(cornerRadius),
+        border: Border.all(
+          color:
+              isSelected ? Theme.of(context).accentColor : Colors.transparent,
         ),
-        child: children.length == 1
-            ? Row(
-                crossAxisAlignment: CrossAxisAlignment.start, children: columns)
-            : Column(children: children),
       ),
+      child: children.length == 1
+          ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: columns)
+          : Column(children: children),
     );
 
     if (onTap == null && onLongPress == null) {
-      return card;
+      return child;
     }
 
     return InkWell(
       onTap: onTap != null ? () => onTap!(context) : null,
       onLongPress: onLongPress != null ? () => onLongPress!(context) : null,
-      child: card,
+      child: child,
     );
   }
 }
