@@ -35,12 +35,12 @@ void main() {
               (w.child as Column).children.length == 3,
         ),
         findsOneWidget,
-        reason: 'Direct card child is column',
+        reason: 'Direct container child is column',
       );
     }
 
     testWidgets(
-      'should display only columns, inside a row, and inside a card with '
+      'should display only columns, inside a row, and inside a container with '
       'fixed width',
       (tester) async {
         await tester.pumpWidget(MaterialApp(
@@ -52,15 +52,13 @@ void main() {
         expect(
           find.byWidgetPredicate(
             (w) =>
-                w is Card &&
-                w.child is Container &&
-                (w.child as Container).constraints!.minWidth == 500 &&
-                ((w.child as Container).decoration as BoxDecoration).border ==
+                w is Container &&
+                w.constraints!.minWidth == 500 &&
+                (w.decoration as BoxDecoration).border ==
                     Border.all(color: Colors.transparent),
           ),
           findsOneWidget,
-          reason: 'Card child is a container with transparent border since '
-              '!isSelected',
+          reason: 'container with transparent border since !isSelected',
         );
         expect(
           find.byWidgetPredicate(
@@ -93,15 +91,16 @@ void main() {
         expect(
           find.byWidgetPredicate(
             (w) =>
-                w is Card &&
-                w.child is Container &&
-                (w.child as Container).constraints!.minWidth == 500 &&
-                ((w.child as Container).decoration as BoxDecoration).border ==
+                w is Container &&
+                w.constraints!.minWidth == 500 &&
+                (w.decoration as BoxDecoration).borderRadius ==
+                    BorderRadius.circular(4) &&
+                (w.decoration as BoxDecoration).border ==
                     Border.all(color: Colors.orange),
           ),
           findsOneWidget,
-          reason: 'Card child is a container with transparent border since '
-              '!isSelected',
+          reason: 'Container with transparent border and 4 corner radius '
+              'since !isSelected',
         );
       },
     );

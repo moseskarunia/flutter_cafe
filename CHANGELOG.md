@@ -1,16 +1,19 @@
+## [0.0.2-dev.4] - 6 May 21
+- Fix: Failing test from `Card` removal from `Waffle`.
+
 ## [0.0.2-dev.3] - 6 May 21
 - Update: Added `cornerRadius` to Waffle.
 - Breaking: `Waffle` no longer wrapped by `Card`.
 
 ## [0.0.2-dev.2] - 6 May 21
-- Update: Added `width` and `isSelected` to Waffle
+- Update: Added `width` and `isSelected` to Waffle.
 
 ## [0.0.2-dev.1] - 15 Apr 21
 - Fix: `Waffle`'s columns row is now has `crossAxisAlignment.start`.
 - Update: `WaffleTopping.asTitleAndColumnOfIconAndCaptions` rows are now center-aligned vertically.
 
 ## [0.0.2] - 14 Apr 21
-- New: `WaffleFlavorRow`
+- New: `WaffleFlavorRow`.
 
 ## [0.0.1] - 13 Apr 21
-- New: `Waffle`
+- New: `Waffle`.
