@@ -27,18 +27,9 @@ class Waffle extends StatelessWidget {
   /// If provided, will be the fixed width of the Waffle
   final double? width;
 
-  /// If true, will draw a border around the waffle. The color will be
-  /// theme's accent color.
-  final bool isSelected;
-
-  /// Default value 0
-  final double cornerRadius;
-
   const Waffle({
     Key? key,
     required this.columns,
-    this.isSelected = false,
-    this.cornerRadius = 4,
     this.width,
     this.footer,
     this.header,
@@ -65,13 +56,6 @@ class Waffle extends StatelessWidget {
 
     Widget child = Container(
       width: width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(cornerRadius),
-        border: Border.all(
-          color:
-              isSelected ? Theme.of(context).accentColor : Colors.transparent,
-        ),
-      ),
       child: children.length == 1
           ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: columns)
           : Column(children: children),

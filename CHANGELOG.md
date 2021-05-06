@@ -1,3 +1,6 @@
+## [0.0.2-dev.5] - 6 May 21
+- Update: `Waffle` no longer has corner radius, nor manages isSelected.
+
 ## [0.0.2-dev.4] - 6 May 21
 - Fix: Failing test from `Card` removal from `Waffle`.
 

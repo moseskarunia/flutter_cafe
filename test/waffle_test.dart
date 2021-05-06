@@ -54,16 +54,6 @@ void main() {
             (w) =>
                 w is Container &&
                 w.constraints!.minWidth == 500 &&
-                (w.decoration as BoxDecoration).border ==
-                    Border.all(color: Colors.transparent),
-          ),
-          findsOneWidget,
-          reason: 'container with transparent border since !isSelected',
-        );
-        expect(
-          find.byWidgetPredicate(
-            (w) =>
-                w is Container &&
                 w.child is Row &&
                 (w.child as Row).crossAxisAlignment ==
                     CrossAxisAlignment.start &&
@@ -75,33 +65,6 @@ void main() {
         );
 
         expect(find.byType(InkWell), findsNothing);
-      },
-    );
-
-    testWidgets(
-      'should display with accent-colored border if isSelected',
-      (tester) async {
-        await tester.pumpWidget(MaterialApp(
-          theme: ThemeData(accentColor: Colors.orange),
-          home: Scaffold(
-            body: Waffle(columns: columnFixtures, width: 500, isSelected: true),
-          ),
-        ));
-
-        expect(
-          find.byWidgetPredicate(
-            (w) =>
-                w is Container &&
-                w.constraints!.minWidth == 500 &&
-                (w.decoration as BoxDecoration).borderRadius ==
-                    BorderRadius.circular(4) &&
-                (w.decoration as BoxDecoration).border ==
-                    Border.all(color: Colors.orange),
-          ),
-          findsOneWidget,
-          reason: 'Container with transparent border and 4 corner radius '
-              'since !isSelected',
-        );
       },
     );
 
